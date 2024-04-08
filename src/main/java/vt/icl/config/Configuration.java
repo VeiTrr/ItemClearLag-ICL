@@ -4,28 +4,34 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class Configuration {
-    public long delay;
-    public long notificationdelay;
-    public long notificationstart;
-    public int notificationtimes;
-    public long countdownstart;
-    public boolean notificationcountdown;
-    public boolean showNotification;
-    public boolean showNotificationSound;
-    public String notificationSound;
-    public String notificationLang;
+    public long Delay;
+    public long NotificationDelay;
+    public long NotificationStart;
+    public int NotificationTimes;
+    public long CountdownStart;
+    public boolean doNotificationCountdown;
+    public boolean doShowNotification;
+    public boolean doNotificationSound;
+    public boolean doLastNotificationSound;
+    public String NotificationSound;
+    public String LastNotificationSound;
+    public String NotificationLang;
+    public String NotificationColor;
 
     public Configuration() {
-        this.delay = 80;
-        this.notificationdelay = 15;
-        this.notificationstart = 60;
-        this.notificationtimes = 4;
-        this.countdownstart = 5;
-        this.notificationcountdown = true;
-        this.showNotification = true;
-        this.showNotificationSound = true;
-        this.notificationSound = "minecraft:block.note_block.harp";
-        this.notificationLang = "en_us";
+        this.Delay = 80;
+        this.NotificationDelay = 15;
+        this.NotificationStart = 60;
+        this.NotificationTimes = 4;
+        this.CountdownStart = 5;
+        this.doNotificationCountdown = true;
+        this.doShowNotification = true;
+        this.doNotificationSound = true;
+        this.doLastNotificationSound = false;
+        this.NotificationSound = "block.note_block.harp";
+        this.LastNotificationSound = "block.note_block.harp";
+        this.NotificationLang = "en_us";
+        this.NotificationColor = "RED";
     }
 
     public void save() {
@@ -35,67 +41,100 @@ public class Configuration {
     // list of all the configuration field and its types example: delay/long
     public HashMap<String, Type> get() {
         HashMap<String, Type> map = new HashMap<>();
-        map.put("delay", long.class);
-        map.put("notificationdelay", long.class);
-        map.put("notificationstart", long.class);
-        map.put("notificationtimes", int.class);
-        map.put("countdownstart", long.class);
-        map.put("notificationcountdown", boolean.class);
-        map.put("showNotification", boolean.class);
-        map.put("showNotificationSound", boolean.class);
-        map.put("notificationSound", String.class);
-        map.put("notificationLang", String.class);
+        map.put("Delay", long.class);
+        map.put("NotificationDelay", long.class);
+        map.put("NotificationStart", long.class);
+        map.put("NotificationTimes", int.class);
+        map.put("CountdownStart", long.class);
+        map.put("doNotificationCountdown", boolean.class);
+        map.put("doShowNotification", boolean.class);
+        map.put("doNotificationSound", boolean.class);
+        map.put("doLastNotificationSound", boolean.class);
+        map.put("NotificationSound", String.class);
+        map.put("LastNotificationSound", String.class);
+        map.put("NotificationLang", String.class);
+        map.put("NotificationColor", String.class);
         return map;
     }
 
     public void set(Configuration configuration) {
-        this.delay = configuration.delay;
-        this.notificationdelay = configuration.notificationdelay;
-        this.notificationstart = configuration.notificationstart;
-        this.notificationtimes = configuration.notificationtimes;
-        this.countdownstart = configuration.countdownstart;
-        this.notificationcountdown = configuration.notificationcountdown;
-        this.showNotification = configuration.showNotification;
-        this.showNotificationSound = configuration.showNotificationSound;
-        this.notificationSound = configuration.notificationSound;
-        this.notificationLang = configuration.notificationLang;
+        this.Delay = configuration.Delay;
+        this.NotificationDelay = configuration.NotificationDelay;
+        this.NotificationStart = configuration.NotificationStart;
+        this.NotificationTimes = configuration.NotificationTimes;
+        this.CountdownStart = configuration.CountdownStart;
+        this.doNotificationCountdown = configuration.doNotificationCountdown;
+        this.doShowNotification = configuration.doShowNotification;
+        this.doNotificationSound = configuration.doNotificationSound;
+        this.doLastNotificationSound = configuration.doLastNotificationSound;
+        this.NotificationSound = configuration.NotificationSound;
+        this.LastNotificationSound = configuration.LastNotificationSound;
+        this.NotificationLang = configuration.NotificationLang;
+        this.NotificationColor = configuration.NotificationColor;
     }
 
     public void set(String key, String value) {
         switch (key) {
-            case "delay":
-                this.delay = Long.parseLong(value);
+            case "Delay":
+                this.Delay = Long.parseLong(value);
                 break;
-            case "notificationdelay":
-                this.notificationdelay = Long.parseLong(value);
+            case "NotificationDelay":
+                this.NotificationDelay = Long.parseLong(value);
                 break;
-            case "notificationstart":
-                this.notificationstart = Long.parseLong(value);
+            case "NotificationStart":
+                this.NotificationStart = Long.parseLong(value);
                 break;
-            case "notificationtimes":
-                this.notificationtimes = Integer.parseInt(value);
+            case "NotificationTimes":
+                this.NotificationTimes = Integer.parseInt(value);
                 break;
-            case "countdownstart":
-                this.countdownstart = Long.parseLong(value);
+            case "CountdownStart":
+                this.CountdownStart = Long.parseLong(value);
                 break;
-            case "notificationcountdown":
-                this.notificationcountdown = Boolean.parseBoolean(value);
+            case "doNotificationCountdown":
+                this.doNotificationCountdown = Boolean.parseBoolean(value);
                 break;
-            case "showNotification":
-                this.showNotification = Boolean.parseBoolean(value);
+            case "doShowNotification":
+                this.doShowNotification = Boolean.parseBoolean(value);
                 break;
-            case "showNotificationSound":
-                this.showNotificationSound = Boolean.parseBoolean(value);
+            case "doNotificationSound":
+                this.doNotificationSound = Boolean.parseBoolean(value);
                 break;
-            case "notificationSound":
-                this.notificationSound = value;
+            case "doLastNotificationSound":
+                this.doLastNotificationSound = Boolean.parseBoolean(value);
                 break;
-            case "notificationLang":
-                this.notificationLang = value;
+            case "NotificationSound":
+                this.NotificationSound = value;
+                break;
+            case "LastNotificationSound":
+                this.LastNotificationSound = value;
+                break;
+            case "NotificationLang":
+                this.NotificationLang = value;
+                break;
+            case "NotificationColor":
+                this.NotificationColor = value;
                 break;
         }
         save();
     }
 
-
+    //getValue return the value of the key example: "Delay" -> 80
+    public String getValue(String key) {
+        return switch (key) {
+            case "Delay" -> String.valueOf(this.Delay);
+            case "NotificationDelay" -> String.valueOf(this.NotificationDelay);
+            case "NotificationStart" -> String.valueOf(this.NotificationStart);
+            case "NotificationTimes" -> String.valueOf(this.NotificationTimes);
+            case "CountdownStart" -> String.valueOf(this.CountdownStart);
+            case "doNotificationCountdown" -> String.valueOf(this.doNotificationCountdown);
+            case "doShowNotification" -> String.valueOf(this.doShowNotification);
+            case "doNotificationSound" -> String.valueOf(this.doNotificationSound);
+            case "doLastNotificationSound" -> String.valueOf(this.doLastNotificationSound);
+            case "NotificationSound" -> this.NotificationSound;
+            case "LastNotificationSound" -> this.LastNotificationSound;
+            case "NotificationLang" -> this.NotificationLang;
+            case "NotificationColor" -> this.NotificationColor;
+            default -> null;
+        };
+    }
 }

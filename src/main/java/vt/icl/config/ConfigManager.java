@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
+import vt.icl.ICL;
 
 import java.io.File;
 
@@ -18,8 +19,14 @@ public class ConfigManager {
         if (configFile.exists()) {
             try {
                 config = GSON.fromJson(FileUtils.readFileToString(configFile, "UTF-8"), Configuration.class);
+                //check if the config file is outdated
+                for (String key : new Configuration().get().keySet()) {
+                    if (!config.get().containsKey(key)) {
+                        config.get().put(key, new Configuration().get().get(key));
+                    }
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                ICL.LOGGER.info("Failed to load config file " + e.getMessage());
                 config = new Configuration();
                 saveConfig();
             }
@@ -46,7 +53,7 @@ public class ConfigManager {
         try {
             FileUtils.writeStringToFile(configFile, GSON.toJson(config), "UTF-8");
         } catch (Exception e) {
-            e.printStackTrace();
+            ICL.LOGGER.info("Failed to save config file " + e.getMessage());
         }
     }
 }

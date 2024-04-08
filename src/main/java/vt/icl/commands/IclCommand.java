@@ -19,13 +19,12 @@ import java.util.concurrent.ExecutionException;
 
 import static net.minecraft.command.suggestion.SuggestionProviders.AVAILABLE_SOUNDS;
 import static vt.icl.ICL.IclTranslate;
+import static vt.icl.ICL.config;
 
 public class IclCommand {
     private static final SuggestionProvider<ServerCommandSource> CONFIG_FIELDS = (context, builder) -> {
         Configuration config = ICL.config;
-        config.get().forEach((key, type) -> {
-            builder.suggest(key);
-        });
+        config.get().forEach((key, type) -> builder.suggest(key));
         return builder.buildFuture();
     };
 
@@ -33,7 +32,6 @@ public class IclCommand {
         IclTranslationManager.getAvailableLangs().forEach(builder::suggest);
         return builder.buildFuture();
     };
-
 
     private static final SuggestionProvider<ServerCommandSource> SOUNDS = (context, builder) -> {
         try {
@@ -48,8 +46,32 @@ public class IclCommand {
         return builder.buildFuture();
     };
 
+    private static final SuggestionProvider<ServerCommandSource> COLORS = (context, builder) -> {
+        builder.suggest("BLACK");
+        builder.suggest("DARK_BLUE");
+        builder.suggest("DARK_GREEN");
+        builder.suggest("DARK_AQUA");
+        builder.suggest("DARK_RED");
+        builder.suggest("DARK_PURPLE");
+        builder.suggest("GOLD");
+        builder.suggest("GRAY");
+        builder.suggest("DARK_GRAY");
+        builder.suggest("BLUE");
+        builder.suggest("GREEN");
+        builder.suggest("AQUA");
+        builder.suggest("RED");
+        builder.suggest("LIGHT_PURPLE");
+        builder.suggest("YELLOW");
+        builder.suggest("WHITE");
+        return builder.buildFuture();
+    };
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
         dispatcher.register(CommandManager.literal("icl")
+                .executes(context -> {
+                    showReadmeInfo(context.getSource().getPlayer());
+                    return 1;
+                })
                 .then(CommandManager.literal("forceclean")
                         .executes(context -> {
                             forceClean(context.getSource().getServer(), context.getSource().getPlayer());
@@ -64,24 +86,31 @@ public class IclCommand {
                         .then(CommandManager.literal("set")
                                 .then(CommandManager.argument("key", StringArgumentType.string())
                                         .suggests(CONFIG_FIELDS)
+                                        .executes(context -> {
+                                            String key = StringArgumentType.getString(context, "key");
+                                            showConfigValue(key, context.getSource().getPlayer());
+                                            return 1;
+                                        })
                                         .then(CommandManager.argument("value", StringArgumentType.string())
                                                 .suggests((context, suggestionsBuilder) -> switch (StringArgumentType.getString(context, "key")) {
-                                                    case "delay" -> suggestionsBuilder.suggest("80").buildFuture();
-                                                    case "notificationdelay" ->
+                                                    case "Delay" -> suggestionsBuilder.suggest("80").buildFuture();
+                                                    case "NotificationDelay" ->
                                                             suggestionsBuilder.suggest("15").buildFuture();
-                                                    case "notificationstart" ->
+                                                    case "NotificationStart" ->
                                                             suggestionsBuilder.suggest("60").buildFuture();
-                                                    case "notificationtimes" ->
+                                                    case "NotificationTimes" ->
                                                             suggestionsBuilder.suggest("4").buildFuture();
-                                                    case "countdownstart" ->
+                                                    case "CountdownStart" ->
                                                             suggestionsBuilder.suggest("5").buildFuture();
-                                                    case "notificationcountdown", "showNotificationSound",
-                                                         "showNotification" ->
+                                                    case "doNotificationCountdown", "doShowNotification",
+                                                         "doNotificationSound", "doLastNotificationSound" ->
                                                             suggestionsBuilder.suggest("true").suggest("false").buildFuture();
-                                                    case "notificationSound" ->
+                                                    case "NotificationSound", "LastNotificationSound" ->
                                                             SOUNDS.getSuggestions(context, suggestionsBuilder);
-                                                    case "notificationLang" ->
+                                                    case "NotificationLang" ->
                                                             LANGUAGES.getSuggestions(context, suggestionsBuilder);
+                                                    case "NotificationColor" ->
+                                                            COLORS.getSuggestions(context, suggestionsBuilder);
                                                     default -> suggestionsBuilder.buildFuture();
                                                 })
                                                 .executes(context -> {
@@ -90,6 +119,26 @@ public class IclCommand {
                                                     ConfigEdit(key, value, context.getSource().getPlayer());
                                                     return 1;
                                                 }))))));
+    }
+
+    public static void showReadmeInfo(@Nullable ServerPlayerEntity player) {
+        if (player != null) {
+            player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.readme")).formatted(Formatting.GREEN));
+        } else {
+            ICL.LOGGER.info(IclTranslate("text.icl.readme"));
+        }
+    }
+
+    public static void showConfigValue(String key, @Nullable ServerPlayerEntity player) {
+        String currentValue = ICL.config.getValue(key);
+        String defaultValue = new Configuration().getValue(key);
+        if (player != null) {
+            player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.current", key, currentValue, defaultValue)).formatted(Formatting.GREEN));
+        } else {
+            ICL.LOGGER.info("Current value of {} is {}", key, currentValue);
+            ICL.LOGGER.info("Default value of {} is {}", key, defaultValue);
+        }
+
     }
 
     public static void reloadIcl(@Nullable ServerPlayerEntity player) {
@@ -117,8 +166,24 @@ public class IclCommand {
 
     public static void ConfigEdit(String key, String value, @Nullable ServerPlayerEntity player) {
         ICL.config.set(key, value);
-        if (key.equals("notificationLang")) {
+        if (key.equals("NotificationLang")) {
             ICL.translations = IclTranslationManager.loadTranslation(value);
+        }
+        if (key.equals("NotificationColor")) {
+            if (value != null) {
+                try {
+                    Formatting color = Formatting.valueOf(value);
+                    if (player != null) {
+                        player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.valueOf(config.NotificationColor)));
+                        return;
+                    }
+                } catch (IllegalArgumentException e) {
+                    if (player != null) {
+                        player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.RED));
+                        return;
+                    }
+                }
+            }
         }
         if (player != null) {
             player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.GREEN));
