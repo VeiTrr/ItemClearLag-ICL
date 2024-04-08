@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "icl",
+  "version": "${version}",
+  "name": "ICL",
+  "description": "",
+  "authors": [
+    "VeiTr"
+  ],
+  "contact": {
+    "repo": "https://github.com/VeiTrr/ICL"
+  },
+  "license": "MIT",
+  "icon": "assets/icl/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "vt.icl.ICL"
+    ]
+  },
+  "mixins": [
+    "icl.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
