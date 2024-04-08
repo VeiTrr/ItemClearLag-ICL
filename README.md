@@ -5,7 +5,7 @@ ItemClearLag (ICL) is a Minecraft mod designed to improve server performance by 
 ## Installation
 
 1. Ensure you have Fabric installed.
-2. Download the latest version of ICL from the [releases page](https://github.com/VeiTrr/ICL/releases).
+2. Download the latest version of ICL from the [releases page](https://github.com/VeiTrr/ItemClearLag-ICL).
 3. Place the downloaded .jar file into your `mods` folder.
 4. Start your server or game.
 
