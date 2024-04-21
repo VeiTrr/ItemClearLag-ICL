@@ -18,6 +18,7 @@ The main command provided by ICL is `/icl`, which has several subcommands:
 - `/icl forceclean`: Immediately clears all items on the ground.
 - `/icl reload`: Reloads the ICL.
 - `/icl config set <key> <value>`: Changes a configuration value. The changes are immediately saved to disk.
+- `/icl cancel [seconds]`: Cancels the next clear. If a number of seconds is provided, the next clear will be scheduled after that many seconds.
 
 ## Configuration
 

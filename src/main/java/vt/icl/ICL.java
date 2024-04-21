@@ -9,6 +9,7 @@ import net.minecraft.network.packet.s2c.play.PlaySoundIdS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -98,8 +99,8 @@ public class ICL implements ModInitializer {
                 public void run() {
                     LOGGER.info("{} seconds left", "Clearing items " + (config.NotificationStart - config.NotificationDelay * finalI));
                     for (var player : server.getPlayerManager().getPlayerList()) {
-                        player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.notification", (config.NotificationStart - config.NotificationDelay * finalI)))
-                                .formatted(Formatting.valueOf(config.NotificationColor)));
+                        player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.notification", (config.NotificationStart - config.NotificationDelay * finalI)) +  " ")
+                                .formatted(Formatting.valueOf(config.NotificationColor)).append(Text.literal(IclTranslate("text.icl.cancel.button")).styled(style -> style.withClickEvent(IclCancelEvent())).formatted(Formatting.RED)));
                         try {
                             if (config.doNotificationSound) {
                                 IclPlaysound(player, false);
@@ -139,8 +140,8 @@ public class ICL implements ModInitializer {
                         public void run() {
                             LOGGER.info("{} seconds left", "Clearing items " + (finalCountdownstart - finalI));
                             for (var player : server.getPlayerManager().getPlayerList()) {
-                                player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)))
-                                        .formatted(Formatting.valueOf(config.NotificationColor)));
+                                player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)) +  " ")
+                                        .formatted(Formatting.valueOf(config.NotificationColor)).append(Text.literal(IclTranslate("text.icl.cancel.button")).styled(style -> style.withClickEvent(IclCancelEvent())).formatted(Formatting.RED)));
                             }
                         }
                     }, finalI * 1000L);
@@ -194,6 +195,47 @@ public class ICL implements ModInitializer {
         } else {
             LOGGER.info("ICL disabled, delay is less than 0");
         }
+    }
+
+    public static void CancelIcl(int tempDelay) {
+        TIMER.cancel();
+        TIMER = new Timer("ICL");
+        if (tempDelay > 0) {
+            TIMER.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    config = ConfigManager.getConfig();
+                    if (config.Delay > 0) {
+                        doItemClean(server);
+                        if (config.doShowNotification) {
+                            setupNotificationTimers(server);
+                        }
+                        if (config.doNotificationCountdown) {
+                            setupCountdownTimer(server);
+                        }
+                    } else {
+                        LOGGER.info("ICL disabled, delay is less than 0");
+                    }
+                }
+            }, tempDelay * 1000L);
+        } else {
+            config = ConfigManager.getConfig();
+            if (config.Delay > 0) {
+                doItemClean(server);
+                if (config.doShowNotification) {
+                    setupNotificationTimers(server);
+                }
+                if (config.doNotificationCountdown) {
+                    setupCountdownTimer(server);
+                }
+            } else {
+                LOGGER.info("ICL disabled, delay is less than 0");
+            }
+        }
+    }
+
+    public static ClickEvent IclCancelEvent() {
+        return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/icl cancel");
     }
 
     public static String IclTranslate(String key, Object... args) {

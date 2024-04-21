@@ -1,6 +1,7 @@
 package vt.icl.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.command.CommandRegistryAccess;
@@ -82,6 +83,16 @@ public class IclCommand {
                             reloadIcl(context.getSource().getPlayer());
                             return 1;
                         }))
+                .then(CommandManager.literal("cancel")
+                        .executes(context -> {
+                            cancelClean(context.getSource().getPlayer(), 0);
+                            return 1;
+                        }) .then(CommandManager.argument("seconds", IntegerArgumentType.integer())
+                                .suggests((context, suggestionsBuilder) -> suggestionsBuilder.suggest("300").buildFuture())
+                                .executes(context -> {
+                                    cancelClean(context.getSource().getPlayer(), IntegerArgumentType.getInteger(context, "seconds"));
+                                    return 1;
+                                })))
                 .then(CommandManager.literal("config")
                         .then(CommandManager.literal("set")
                                 .then(CommandManager.argument("key", StringArgumentType.string())
@@ -157,6 +168,24 @@ public class IclCommand {
 
     }
 
+    public static void cancelClean(@Nullable ServerPlayerEntity player, int seconds) {
+        try {
+            if (seconds < 0) {
+                seconds = 0;
+            }
+            ICL.CancelIcl(seconds);
+            if (player != null) {
+                player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.cancel.message")).formatted(Formatting.GREEN));
+            }
+        } catch (Exception e) {
+            if (player != null) {
+                player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.reload.fail")).formatted(Formatting.RED));
+                player.sendMessage(Text.literal("[ICL] " + e.getMessage()).formatted(Formatting.RED));
+            }
+            ICL.LOGGER.error(e.getMessage());
+        }
+    }
+
     public static void forceClean(MinecraftServer server, @Nullable ServerPlayerEntity player) {
         ICL.clearItems(server);
         if (player != null) {
@@ -172,7 +201,6 @@ public class IclCommand {
         if (key.equals("NotificationColor")) {
             if (value != null) {
                 try {
-                    Formatting color = Formatting.valueOf(value);
                     if (player != null) {
                         player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.valueOf(config.NotificationColor)));
                         return;
@@ -188,5 +216,7 @@ public class IclCommand {
         if (player != null) {
             player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.GREEN));
         }
+        ICL.reloadIcl();
     }
+
 }

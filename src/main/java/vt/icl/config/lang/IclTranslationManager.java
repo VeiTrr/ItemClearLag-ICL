@@ -52,6 +52,8 @@ public class IclTranslationManager {
                     }
                 }
 
+                saveTranslation(lang, loadedTranslations);
+
                 return loadedTranslations;
             } catch (IOException e) {
                 ICL.LOGGER.info("Failed to load translation file for " + lang);
@@ -91,6 +93,8 @@ public class IclTranslationManager {
         translations.put("text.icl.forceclear", "Forced clearing of items");
         translations.put("text.icl.config.updated", "Config value %s changed to %s");
         translations.put("text.icl.reload", "ICL reloaded");
+        translations.put("text.icl.cancel.button", "[Cancel]");
+        translations.put("text.icl.cancel.message", "Item clear cancelled");
         translations.put("text.icl.reload.fail", "Failed to reload ICL");
         translations.put("text.icl.clear.finish", "Items cleared: %d");
         translations.put("text.icl.config.current", "Current value of %s: %s (Default: %s)");
@@ -99,6 +103,7 @@ public class IclTranslationManager {
                 "\n- §a/icl forceclean§r: Immediately clears all items on the ground." +
                 "\n- §a/icl reload§r: Reloads the ICL." +
                 "\n- §a/icl config set <key> <value>§r: Changes a configuration value. The changes are immediately saved to disk." +
+                "\n- §a/icl cancel [seconds]§r: Cancels the next clear. If a number of seconds is provided, the next clear will be scheduled after that many seconds." +
                 "\n" +
                 "\n§l§nConfiguration§r\n" +
                 "\nConfiguration values can be changed using the §a/icl config set§r command. Here are some of the configurable values:" +
@@ -126,6 +131,8 @@ public class IclTranslationManager {
         translations.put("text.icl.forceclear", "Принудительная очистка предметов");
         translations.put("text.icl.config.updated", "Значение конфига %s изменено на %s");
         translations.put("text.icl.reload", "ICL перезагружен");
+        translations.put("text.icl.cancel.button", "[Отмена]");
+        translations.put("text.icl.cancel.message", "Очистка предметов отменена");
         translations.put("text.icl.reload.fail", "ICL не удалось перезагрузить");
         translations.put("text.icl.clear.finish", "Очищено предметов: %d");
         translations.put("text.icl.config.current", "Текущее значение %s: %s (По умолчанию: %s)");
@@ -134,6 +141,7 @@ public class IclTranslationManager {
                 "\n- §a/icl forceclean§r: Немедленно очищает все предметы на полу." +
                 "\n- §a/icl reload§r: Перезагружает ICL." +
                 "\n- §a/icl config set <key> <value>§r: Изменяет значение конфигурации. Изменения немедленно сохраняются на диск." +
+                "\n- §a/icl cancel [seconds]§r: Отменяет следующую очистку. Если указано количество секунд, следующая очистка будет запланирована через столько секунд." +
                 "\n" +
                 "\n§l§nКонфигурация§r\n" +
                 "\nЗначения конфигурации можно изменить с помощью команды §a/icl config set§r. Вот некоторые из настраиваемых значений:" +
