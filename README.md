@@ -1,3 +1,5 @@
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1001584?style=for-the-badge&logo=curseforge&logoColor=%230d0d0d&labelColor=%23f16436&color=%230d0d0d)](https://www.curseforge.com/minecraft/mc-mods/itemclearlag) [![Modrinth Downloads](https://img.shields.io/modrinth/dt/NJcJEXNc?style=for-the-badge&logo=modrinth&color=%231bd96a)](https://modrinth.com/mod/itemclearlag)
+
 # ItemClearLag (ICL)
 
 ItemClearLag (ICL) is a Minecraft mod designed to improve server performance by periodically removing items from the ground. This mod is especially useful for servers with high player counts where dropped items can accumulate and cause lag.
