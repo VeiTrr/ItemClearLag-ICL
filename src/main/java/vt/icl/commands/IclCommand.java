@@ -74,26 +74,30 @@ public class IclCommand {
                     return 1;
                 })
                 .then(CommandManager.literal("forceclean")
+                        .requires(source -> !config.RequireOp || source.hasPermissionLevel(2))
                         .executes(context -> {
                             forceClean(context.getSource().getServer(), context.getSource().getPlayer());
                             return 1;
                         }))
                 .then(CommandManager.literal("reload")
+                        .requires(source -> !config.RequireOp || source.hasPermissionLevel(2))
                         .executes(context -> {
                             reloadIcl(context.getSource().getPlayer());
                             return 1;
                         }))
                 .then(CommandManager.literal("cancel")
+                        .requires(source -> !config.RequireOpCancel || source.hasPermissionLevel(2))
                         .executes(context -> {
                             cancelClean(context.getSource().getPlayer(), 0);
                             return 1;
-                        }) .then(CommandManager.argument("seconds", IntegerArgumentType.integer())
+                        }).then(CommandManager.argument("seconds", IntegerArgumentType.integer())
                                 .suggests((context, suggestionsBuilder) -> suggestionsBuilder.suggest("300").buildFuture())
                                 .executes(context -> {
                                     cancelClean(context.getSource().getPlayer(), IntegerArgumentType.getInteger(context, "seconds"));
                                     return 1;
                                 })))
                 .then(CommandManager.literal("config")
+                        .requires(source -> !config.RequireOp || source.hasPermissionLevel(2))
                         .then(CommandManager.literal("set")
                                 .then(CommandManager.argument("key", StringArgumentType.string())
                                         .suggests(CONFIG_FIELDS)
@@ -114,7 +118,8 @@ public class IclCommand {
                                                     case "CountdownStart" ->
                                                             suggestionsBuilder.suggest("5").buildFuture();
                                                     case "doNotificationCountdown", "doShowNotification",
-                                                         "doNotificationSound", "doLastNotificationSound" ->
+                                                         "doNotificationSound", "doLastNotificationSound", "RequireOp",
+                                                         "RequireOpCancel" ->
                                                             suggestionsBuilder.suggest("true").suggest("false").buildFuture();
                                                     case "NotificationSound", "LastNotificationSound" ->
                                                             SOUNDS.getSuggestions(context, suggestionsBuilder);

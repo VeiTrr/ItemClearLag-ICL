@@ -17,6 +17,8 @@ public class Configuration {
     public String LastNotificationSound;
     public String NotificationLang;
     public String NotificationColor;
+    public boolean RequireOp;
+    public boolean RequireOpCancel;
 
     public Configuration() {
         this.Delay = 80;
@@ -32,13 +34,14 @@ public class Configuration {
         this.LastNotificationSound = "block.note_block.harp";
         this.NotificationLang = "en_us";
         this.NotificationColor = "RED";
+        this.RequireOp = true;
+        this.RequireOpCancel = false;
     }
 
     public void save() {
         ConfigManager.setConfig(this);
     }
 
-    // list of all the configuration field and its types example: delay/long
     public HashMap<String, Type> get() {
         HashMap<String, Type> map = new HashMap<>();
         map.put("Delay", long.class);
@@ -54,6 +57,8 @@ public class Configuration {
         map.put("LastNotificationSound", String.class);
         map.put("NotificationLang", String.class);
         map.put("NotificationColor", String.class);
+        map.put("RequireOp", boolean.class);
+        map.put("RequireOpCancel", boolean.class);
         return map;
     }
 
@@ -71,6 +76,8 @@ public class Configuration {
         this.LastNotificationSound = configuration.LastNotificationSound;
         this.NotificationLang = configuration.NotificationLang;
         this.NotificationColor = configuration.NotificationColor;
+        this.RequireOp = configuration.RequireOp;
+        this.RequireOpCancel = configuration.RequireOpCancel;
     }
 
     public void set(String key, String value) {
@@ -114,11 +121,16 @@ public class Configuration {
             case "NotificationColor":
                 this.NotificationColor = value;
                 break;
+            case "RequireOp":
+                this.RequireOp = Boolean.parseBoolean(value);
+                break;
+            case "RequireOpCancel":
+                this.RequireOpCancel = Boolean.parseBoolean(value);
+                break;
         }
         save();
     }
 
-    //getValue return the value of the key example: "Delay" -> 80
     public String getValue(String key) {
         return switch (key) {
             case "Delay" -> String.valueOf(this.Delay);
@@ -134,6 +146,8 @@ public class Configuration {
             case "LastNotificationSound" -> this.LastNotificationSound;
             case "NotificationLang" -> this.NotificationLang;
             case "NotificationColor" -> this.NotificationColor;
+            case "RequireOp" -> String.valueOf(this.RequireOp);
+            case "RequireOpCancel" -> String.valueOf(this.RequireOpCancel);
             default -> null;
         };
     }

@@ -19,7 +19,7 @@ The main command provided by ICL is `/icl`, which has several subcommands:
 
 - `/icl forceclean`: Immediately clears all items on the ground.
 - `/icl reload`: Reloads the ICL.
-- `/icl config set <key> <value>`: Changes a configuration value. The changes are immediately saved to disk.
+- `/icl config set <key> [value]`: Changes a configuration value. To see current configuration value, use `/icl config set <key>`.
 - `/icl cancel [seconds]`: Cancels the next clear. If a number of seconds is provided, the next clear will be scheduled after that many seconds.
 
 ## Configuration
@@ -38,6 +38,8 @@ Configuration values can be changed using the `/icl config set` command. Here ar
 - `LastNotificationSound`: The sound to play when a last notification is sent.
 - `NotificationLang`: The language for notifications.
 - `NotificationColor`: The color for notifications.
+- `RequireOp`: Whether to require the player to be an operator to use the ICL commands(except `/icl`, `/icl cancel`).
+- `RequireOpCancel`: Whether to require the player to be an operator to cancel clear.
 
 ## License
 

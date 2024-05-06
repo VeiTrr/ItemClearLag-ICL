@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.ClickEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -99,8 +100,9 @@ public class ICL implements ModInitializer {
                 public void run() {
                     LOGGER.info("{} seconds left", "Clearing items " + (config.NotificationStart - config.NotificationDelay * finalI));
                     for (var player : server.getPlayerManager().getPlayerList()) {
-                        player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.notification", (config.NotificationStart - config.NotificationDelay * finalI)) +  " ")
-                                .formatted(Formatting.valueOf(config.NotificationColor)).append(Text.literal(IclTranslate("text.icl.cancel.button")).styled(style -> style.withClickEvent(IclCancelEvent())).formatted(Formatting.RED)));
+                        MutableText message = Text.literal("[ICL] " + IclTranslate("text.icl.notification", (config.NotificationStart - config.NotificationDelay * finalI)) +  " ")
+                                .formatted(Formatting.valueOf(config.NotificationColor));
+                        IclMessage(player, message);
                         try {
                             if (config.doNotificationSound) {
                                 IclPlaysound(player, false);
@@ -113,6 +115,21 @@ public class ICL implements ModInitializer {
                 }
             }, delay * 1000);
         }
+    }
+
+    private static void IclMessage(ServerPlayerEntity player, MutableText message) {
+        if (config.RequireOpCancel) {
+            if (player.hasPermissionLevel(2)) {
+                message.append(Text.literal(IclTranslate("text.icl.cancel.button"))
+                        .styled(style -> style.withClickEvent(IclCancelEvent()))
+                        .formatted(Formatting.RED));
+            }
+        } else {
+            message.append(Text.literal(IclTranslate("text.icl.cancel.button"))
+                    .styled(style -> style.withClickEvent(IclCancelEvent()))
+                    .formatted(Formatting.RED));
+        }
+        player.sendMessage(message);
     }
 
     private static void setupCountdownTimer(MinecraftServer server) {
@@ -140,8 +157,9 @@ public class ICL implements ModInitializer {
                         public void run() {
                             LOGGER.info("{} seconds left", "Clearing items " + (finalCountdownstart - finalI));
                             for (var player : server.getPlayerManager().getPlayerList()) {
-                                player.sendMessage(Text.literal("[ICL] " + IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)) +  " ")
-                                        .formatted(Formatting.valueOf(config.NotificationColor)).append(Text.literal(IclTranslate("text.icl.cancel.button")).styled(style -> style.withClickEvent(IclCancelEvent())).formatted(Formatting.RED)));
+                                MutableText message = Text.literal("[ICL] " + IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)) +  " ")
+                                        .formatted(Formatting.valueOf(config.NotificationColor));
+                                IclMessage(player, message);
                             }
                         }
                     }, finalI * 1000L);

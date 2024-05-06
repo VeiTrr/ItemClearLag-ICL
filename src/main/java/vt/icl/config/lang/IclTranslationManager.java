@@ -102,7 +102,7 @@ public class IclTranslationManager {
                 "\nThe main command provided by ICL is §a/icl§r, which has several subcommands:\n" +
                 "\n- §a/icl forceclean§r: Immediately clears all items on the ground." +
                 "\n- §a/icl reload§r: Reloads the ICL." +
-                "\n- §a/icl config set <key> <value>§r: Changes a configuration value. The changes are immediately saved to disk." +
+                "\n- §a/icl config set <key> <value>§r: Changes a configuration value. To see current configuration value, use /icl config set <key>." +
                 "\n- §a/icl cancel [seconds]§r: Cancels the next clear. If a number of seconds is provided, the next clear will be scheduled after that many seconds." +
                 "\n" +
                 "\n§l§nConfiguration§r\n" +
@@ -119,7 +119,10 @@ public class IclTranslationManager {
                 "\n- §aNotificationSound§r: The sound to play when a notification is sent." +
                 "\n- §aLastNotificationSound§r: The sound to play when a last notification is sent." +
                 "\n- §aNotificationLang§r: The language for notifications." +
-                "\n- §aNotificationColor§r: The color for notifications.");
+                "\n- §aNotificationColor§r: The color for notifications." +
+                "\n- §aRequireOp§r: Whether to require OP to use ICL commands(except /icl, /icl cancel)." +
+                "\n- §aRequireOpCancel§r: Whether to require OP to cancel a clear."
+        );
         return translations;
     }
 
@@ -140,7 +143,7 @@ public class IclTranslationManager {
                 "\nОсновная команда, предоставляемая ICL, - §a/icl§r, у которой есть несколько подкоманд:\n" +
                 "\n- §a/icl forceclean§r: Немедленно очищает все предметы на полу." +
                 "\n- §a/icl reload§r: Перезагружает ICL." +
-                "\n- §a/icl config set <key> <value>§r: Изменяет значение конфигурации. Изменения немедленно сохраняются на диск." +
+                "\n- §a/icl config set <key> <value>§r: Изменяет значение конфигурации. Чтобы увидеть текущее значение конфигурации, используйте /icl config set <key>." +
                 "\n- §a/icl cancel [seconds]§r: Отменяет следующую очистку. Если указано количество секунд, следующая очистка будет запланирована через столько секунд." +
                 "\n" +
                 "\n§l§nКонфигурация§r\n" +
@@ -157,7 +160,10 @@ public class IclTranslationManager {
                 "\n- §aNotificationSound§r: Звук, который воспроизводится при отправке уведомления." +
                 "\n- §aLastNotificationSound§r: Звук, который воспроизводится при отправке последнего уведомления." +
                 "\n- §aNotificationLang§r: Язык для уведомлений." +
-                "\n- §aNotificationColor§r: Цвет для уведомлений.");
+                "\n- §aNotificationColor§r: Цвет для уведомлений." +
+                "\n- §aRequireOp§r: Требуется ли OP для использования команд ICL (кроме /icl, /icl cancel)." +
+                "\n- §aRequireOpCancel§r: Требуется ли OP для отмены очистки."
+        );
         return translations;
     }
 }
