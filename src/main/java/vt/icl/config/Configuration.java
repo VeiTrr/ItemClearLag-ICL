@@ -19,6 +19,8 @@ public class Configuration {
     public String NotificationColor;
     public boolean RequireOp;
     public boolean RequireOpCancel;
+    public boolean preserveNoDespawnItems;
+    public boolean preserveNoPickupItems;
 
     public Configuration() {
         this.Delay = 80;
@@ -36,6 +38,9 @@ public class Configuration {
         this.NotificationColor = "RED";
         this.RequireOp = true;
         this.RequireOpCancel = false;
+        this.preserveNoDespawnItems = true;
+        this.preserveNoPickupItems = true;
+
     }
 
     public void save() {
@@ -59,6 +64,8 @@ public class Configuration {
         map.put("NotificationColor", String.class);
         map.put("RequireOp", boolean.class);
         map.put("RequireOpCancel", boolean.class);
+        map.put("preserveNoDespawnItems", boolean.class);
+        map.put("preserveNoPickupItems", boolean.class);
         return map;
     }
 
@@ -78,6 +85,8 @@ public class Configuration {
         this.NotificationColor = configuration.NotificationColor;
         this.RequireOp = configuration.RequireOp;
         this.RequireOpCancel = configuration.RequireOpCancel;
+        this.preserveNoDespawnItems = configuration.preserveNoDespawnItems;
+        this.preserveNoPickupItems = configuration.preserveNoPickupItems;
     }
 
     public void set(String key, String value) {
@@ -127,6 +136,12 @@ public class Configuration {
             case "RequireOpCancel":
                 this.RequireOpCancel = Boolean.parseBoolean(value);
                 break;
+            case "preserveNoDespawnItems":
+                this.preserveNoDespawnItems = Boolean.parseBoolean(value);
+                break;
+            case "preserveNoPickupItems":
+                this.preserveNoPickupItems = Boolean.parseBoolean(value);
+                break;
         }
         save();
     }
@@ -148,6 +163,8 @@ public class Configuration {
             case "NotificationColor" -> this.NotificationColor;
             case "RequireOp" -> String.valueOf(this.RequireOp);
             case "RequireOpCancel" -> String.valueOf(this.RequireOpCancel);
+            case "preserveNoDespawnItems" -> String.valueOf(this.preserveNoDespawnItems);
+            case "preserveNoPickupItems" -> String.valueOf(this.preserveNoPickupItems);
             default -> null;
         };
     }

@@ -19,7 +19,6 @@ public class ConfigManager {
         if (configFile.exists()) {
             try {
                 config = GSON.fromJson(FileUtils.readFileToString(configFile, "UTF-8"), Configuration.class);
-                //check if the config file is outdated
                 for (String key : new Configuration().get().keySet()) {
                     if (!config.get().containsKey(key)) {
                         config.get().put(key, new Configuration().get().get(key));
@@ -28,12 +27,11 @@ public class ConfigManager {
             } catch (Exception e) {
                 ICL.LOGGER.info("Failed to load config file " + e.getMessage());
                 config = new Configuration();
-                saveConfig();
             }
         } else {
             config = new Configuration();
-            saveConfig();
         }
+        saveConfig();
     }
 
     public static Configuration getConfig() {

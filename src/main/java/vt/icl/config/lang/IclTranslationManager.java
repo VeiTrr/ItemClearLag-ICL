@@ -121,7 +121,10 @@ public class IclTranslationManager {
                 "\n- §aNotificationLang§r: The language for notifications." +
                 "\n- §aNotificationColor§r: The color for notifications." +
                 "\n- §aRequireOp§r: Whether to require OP to use ICL commands(except /icl, /icl cancel)." +
-                "\n- §aRequireOpCancel§r: Whether to require OP to cancel a clear."
+                "\n- §aRequireOpCancel§r: Whether to require OP to cancel a clear." +
+                "\n- §apreserveNoDespawnItems§r: Whether to preserve items that are set to never despawn." +
+                "\n- §apreserveNoPickupItems§r: Whether to preserve items that are set to never be picked up."
+
         );
         return translations;
     }
@@ -162,7 +165,9 @@ public class IclTranslationManager {
                 "\n- §aNotificationLang§r: Язык для уведомлений." +
                 "\n- §aNotificationColor§r: Цвет для уведомлений." +
                 "\n- §aRequireOp§r: Требуется ли OP для использования команд ICL (кроме /icl, /icl cancel)." +
-                "\n- §aRequireOpCancel§r: Требуется ли OP для отмены очистки."
+                "\n- §aRequireOpCancel§r: Требуется ли OP для отмены очистки." +
+                "\n- §apreserveNoDespawnItems§r: Следует ли сохранять предметы, которые никогда не исчезнут." +
+                "\n- §apreserveNoPickupItems§r: Следует ли сохранять предметы, которые нельзя подобрать."
         );
         return translations;
     }

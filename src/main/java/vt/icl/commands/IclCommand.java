@@ -119,7 +119,7 @@ public class IclCommand {
                                                             suggestionsBuilder.suggest("5").buildFuture();
                                                     case "doNotificationCountdown", "doShowNotification",
                                                          "doNotificationSound", "doLastNotificationSound", "RequireOp",
-                                                         "RequireOpCancel" ->
+                                                         "RequireOpCancel", "preserveNoDespawnItems", "preserveNoPickupItems" ->
                                                             suggestionsBuilder.suggest("true").suggest("false").buildFuture();
                                                     case "NotificationSound", "LastNotificationSound" ->
                                                             SOUNDS.getSuggestions(context, suggestionsBuilder);

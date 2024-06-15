@@ -22,6 +22,7 @@ import vt.icl.commands.IclCommand;
 import vt.icl.config.ConfigManager;
 import vt.icl.config.Configuration;
 import vt.icl.config.lang.IclTranslationManager;
+import vt.icl.mixin.ItemEntityAccessor;
 
 import java.util.Map;
 import java.util.Timer;
@@ -186,6 +187,17 @@ public class ICL implements ModInitializer {
         int count = 0;
         for (var world : server.getWorlds()) {
             for (var entity : world.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), Entity::isAlive)) {
+                if(config.preserveNoPickupItems) {
+                    ItemEntityAccessor accessor = (ItemEntityAccessor) entity;
+                    if (accessor.getPickupDelay() == Short.MAX_VALUE) {
+                        continue;
+                    }
+                }
+                if (config.preserveNoDespawnItems) {
+                    if (entity.getItemAge() == Short.MIN_VALUE) {
+                        continue;
+                    }
+                }
                 count += entity.getStack().getCount();
                 entity.remove(Entity.RemovalReason.DISCARDED);
             }

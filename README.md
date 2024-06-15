@@ -40,6 +40,8 @@ Configuration values can be changed using the `/icl config set` command. Here ar
 - `NotificationColor`: The color for notifications.
 - `RequireOp`: Whether to require the player to be an operator to use the ICL commands(except `/icl`, `/icl cancel`).
 - `RequireOpCancel`: Whether to require the player to be an operator to cancel clear.
+- `preserveNoDespawnItems`: Whether to preserve items that are set to never despawn.
+- `preserveNoPickupItems`: Whether to preserve items that are set to not be picked up.
 
 ## License
 
