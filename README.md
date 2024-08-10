@@ -38,8 +38,10 @@ Configuration values can be changed using the `/icl config set` command. Here ar
 - `LastNotificationSound`: The sound to play when a last notification is sent.
 - `NotificationLang`: The language for notifications.
 - `NotificationColor`: The color for notifications.
-- `RequireOp`: Whether to require the player to be an operator to use the ICL commands(except `/icl`, `/icl cancel`).
+- `RequireOp`: Whether to require the player to be an operator to use the ICL commands.
+  - ***Note:*** The configuration value is ***not used*** if the fabric-permissions mod is installed, use any permissions manager.
 - `RequireOpCancel`: Whether to require the player to be an operator to cancel clear.
+  - ***Note:*** The configuration value is ***not used*** if the fabric-permissions mod is installed, use any permissions manager.
 - `preserveNoDespawnItems`: Whether to preserve items that are set to never despawn.
 - `preserveNoPickupItems`: Whether to preserve items that are set to not be picked up.
 
