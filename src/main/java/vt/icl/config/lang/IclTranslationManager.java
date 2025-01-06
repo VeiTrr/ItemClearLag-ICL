@@ -76,6 +76,7 @@ public class IclTranslationManager {
     public static void createDefaultTranslationFiles() {
         createDefaultTranslationFile("en_us", getDefaultEnUsTranslations());
         createDefaultTranslationFile("ru_ru", getDefaultRuRuTranslations());
+        createDefaultTranslationFile("zh_cn", getDefaultZhCnTranslations());
     }
 
     private static void createDefaultTranslationFile(String lang, Map<String, String> defaultTranslations) {
@@ -168,6 +169,49 @@ public class IclTranslationManager {
                 "\n- §aRequireOpCancel§r: Требуется ли OP для отмены очистки." +
                 "\n- §apreserveNoDespawnItems§r: Следует ли сохранять предметы, которые никогда не исчезнут." +
                 "\n- §apreserveNoPickupItems§r: Следует ли сохранять предметы, которые нельзя подобрать."
+        );
+        return translations;
+    }
+
+    private static Map<String, String> getDefaultZhCnTranslations() {
+        Map<String, String> translations = new HashMap<>();
+        translations.put("text.icl.notification", "掉落物将在 %d 秒后清除");
+        translations.put("text.icl.countdown", "掉落物清除倒计时 %d 秒");
+        translations.put("text.icl.clear", "清除了掉落物");
+        translations.put("text.icl.forceclear", "强制清除了掉落物");
+        translations.put("text.icl.config.updated", "设定值 %s 改变为 %s");
+        translations.put("text.icl.reload", "ICL 重启完毕");
+        translations.put("text.icl.cancel.button", "[取消]");
+        translations.put("text.icl.cancel.message", "已取消掉落物清除");
+        translations.put("text.icl.reload.fail", "ICL 重启失败");
+        translations.put("text.icl.clear.finish", "清除掉落物数目: %d");
+        translations.put("text.icl.config.current", "%s 的当前值为: %s (默认为: %s)");
+        translations.put("text.icl.readme", "§l§n命令§r\n" +
+            "\nICL 提供的主要命令是 §a/icl§r，它有几个子命令：\n" +
+            "\n- §a/icl forceclean§r: 立即清除地面上的所有物品。" +
+            "\n- §a/icl reload§r: 重新加载 ICL。" +
+            "\n- §a/icl config set <key> <value>§r: 更改配置值。要查看当前配置值，使用 /icl config set <key>。" +
+            "\n- §a/icl cancel [seconds]§r: 取消下次清除。如果提供了秒数，下次清除将在该秒数后安排。" +
+            "\n" +
+            "\n§l§n配置§r\n" +
+            "\n配置值可以使用 §a/icl config set§r 命令进行更改。以下是一些可配置的值：" +
+            "\n" +
+            "\n- §aDelay§r: 自动清除物品之间的延迟（以秒为单位）。" +
+            "\n- §aNotificationDelay§r: 在清除前，发送通知的延迟时间（以秒为单位）。" +
+            "\n- §aNotificationStart§r: 在清除前，开始发送通知的时间（以秒为单位）。" +
+            "\n- §aNotificationTimes§r: 在清除前发送通知的次数。" +
+            "\n- §aCountdownStart§r: 在清除前，倒计时开始的时间（以秒为单位）。" +
+            "\n- §adoNotificationCountdown§r: 是否在清除前显示倒计时。" +
+            "\n- §adoNotificationSound§r: 是否在发送通知时播放声音。" +
+            "\n- §adoLastNotificationSound§r: 是否在发送最后一条通知时播放声音。" +
+            "\n- §aNotificationSound§r: 发送通知时播放的声音。" +
+            "\n- §aLastNotificationSound§r: 发送最后一条通知时播放的声音。" +
+            "\n- §aNotificationLang§r: 通知的语言。" +
+            "\n- §aNotificationColor§r: 通知的颜色。" +
+            "\n- §aRequireOp§r: 是否需要 OP 权限才能使用 ICL 命令（除了 /icl 和 /icl cancel）。" +
+            "\n- §aRequireOpCancel§r: 是否需要 OP 权限才能取消清除。" +
+            "\n- §apreserveNoDespawnItems§r: 是否保留设为永不消失的物品。" +
+            "\n- §apreserveNoPickupItems§r: 是否保留设为永不被拾取的物品。"
         );
         return translations;
     }
