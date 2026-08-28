@@ -1,9 +1,21 @@
 package vt.icl.config;
 
+import vt.icl.ICLCommon;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Configuration {
+    /**
+     * Kept out of ICLCommon on purpose: MOD_ID is a compile-time constant and
+     * gets inlined here, so reading this default never forces ICLCommon to
+     * initialise — and ICLCommon initialises by asking ConfigManager for a
+     * Configuration.
+     */
+    public static final String DEFAULT_NOTIFICATION_PREFIX =
+            "[" + ICLCommon.MOD_ID.toUpperCase(Locale.ROOT) + "] ";
+
     public long Delay;
     public long NotificationDelay;
     public long NotificationStart;
@@ -17,6 +29,7 @@ public class Configuration {
     public String LastNotificationSound;
     public String NotificationLang;
     public String NotificationColor;
+    public String NotificationPrefix;
     public boolean RequireOp;
     public boolean RequireOpCancel;
     public boolean preserveNoDespawnItems;
@@ -37,6 +50,7 @@ public class Configuration {
         this.LastNotificationSound = "block.note_block.harp";
         this.NotificationLang = "en_us";
         this.NotificationColor = "RED";
+        this.NotificationPrefix = DEFAULT_NOTIFICATION_PREFIX;
         this.RequireOp = true;
         this.RequireOpCancel = false;
         this.preserveNoDespawnItems = true;
@@ -63,6 +77,7 @@ public class Configuration {
         map.put("LastNotificationSound", String.class);
         map.put("NotificationLang", String.class);
         map.put("NotificationColor", String.class);
+        map.put("NotificationPrefix", String.class);
         map.put("RequireOp", boolean.class);
         map.put("RequireOpCancel", boolean.class);
         map.put("preserveNoDespawnItems", boolean.class);
@@ -85,6 +100,7 @@ public class Configuration {
         this.LastNotificationSound = configuration.LastNotificationSound;
         this.NotificationLang = configuration.NotificationLang;
         this.NotificationColor = configuration.NotificationColor;
+        this.NotificationPrefix = configuration.NotificationPrefix;
         this.RequireOp = configuration.RequireOp;
         this.RequireOpCancel = configuration.RequireOpCancel;
         this.preserveNoDespawnItems = configuration.preserveNoDespawnItems;
@@ -133,6 +149,9 @@ public class Configuration {
             case "NotificationColor":
                 this.NotificationColor = value;
                 break;
+            case "NotificationPrefix":
+                this.NotificationPrefix = value;
+                break;
             case "RequireOp":
                 this.RequireOp = Boolean.parseBoolean(value);
                 break;
@@ -167,6 +186,7 @@ public class Configuration {
             case "LastNotificationSound" -> this.LastNotificationSound;
             case "NotificationLang" -> this.NotificationLang;
             case "NotificationColor" -> this.NotificationColor;
+            case "NotificationPrefix" -> this.NotificationPrefix;
             case "RequireOp" -> String.valueOf(this.RequireOp);
             case "RequireOpCancel" -> String.valueOf(this.RequireOpCancel);
             case "preserveNoDespawnItems" -> String.valueOf(this.preserveNoDespawnItems);

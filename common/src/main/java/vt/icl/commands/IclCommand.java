@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import vt.icl.ICLCommon;
@@ -160,7 +159,7 @@ public class IclCommand {
 
     public static void showReadmeInfo(@Nullable ServerPlayerEntity player) {
         if (player != null) {
-            player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.readme")).formatted(Formatting.GREEN));
+            player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.readme"), Formatting.GREEN));
         } else {
             ICLCommon.LOGGER.info(IclTranslate("text.icl.readme"));
         }
@@ -170,7 +169,7 @@ public class IclCommand {
         String currentValue = ICLCommon.config.getValue(key);
         String defaultValue = new Configuration().getValue(key);
         if (player != null) {
-            player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.config.current", key, currentValue, defaultValue)).formatted(Formatting.GREEN));
+            player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.config.current", key, currentValue, defaultValue), Formatting.GREEN));
         } else {
             ICLCommon.LOGGER.info("Current value of {} is {}", key, currentValue);
             ICLCommon.LOGGER.info("Default value of {} is {}", key, defaultValue);
@@ -182,12 +181,12 @@ public class IclCommand {
         try {
             ICLCommon.reloadIcl();
             if (player != null) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.reload")).formatted(Formatting.GREEN));
+                player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.reload"), Formatting.GREEN));
             }
         } catch (Exception e) {
             if (player != null) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.reload.fail")).formatted(Formatting.RED));
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + e.getMessage()).formatted(Formatting.RED));
+                player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.reload.fail"), Formatting.RED));
+                player.sendMessage(ICLCommon.IclText(e.getMessage(), Formatting.RED));
             }
             ICLCommon.LOGGER.error(e.getMessage());
         }
@@ -201,12 +200,12 @@ public class IclCommand {
             }
             ICLCommon.CancelIcl(seconds);
             if (player != null) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.cancel.message")).formatted(Formatting.GREEN));
+                player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.cancel.message"), Formatting.GREEN));
             }
         } catch (Exception e) {
             if (player != null) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.reload.fail")).formatted(Formatting.RED));
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + e.getMessage()).formatted(Formatting.RED));
+                player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.reload.fail"), Formatting.RED));
+                player.sendMessage(ICLCommon.IclText(e.getMessage(), Formatting.RED));
             }
             ICLCommon.LOGGER.error(e.getMessage());
         }
@@ -215,7 +214,7 @@ public class IclCommand {
     public static void forceClean(MinecraftServer server, @Nullable ServerPlayerEntity player) {
         server.execute(() -> ICLCommon.clearItems(server));
         if (player != null) {
-            player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.forceclear")).formatted(Formatting.GREEN));
+            player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.forceclear"), Formatting.GREEN));
         }
     }
 
@@ -228,19 +227,19 @@ public class IclCommand {
             if (value != null) {
                 try {
                     if (player != null) {
-                        player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.valueOf(config.NotificationColor)));
+                        player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.config.updated", key, value), Formatting.valueOf(config.NotificationColor)));
                         return;
                     }
                 } catch (IllegalArgumentException e) {
                     if (player != null) {
-                        player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.RED));
+                        player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.config.updated", key, value), Formatting.RED));
                         return;
                     }
                 }
             }
         }
         if (player != null) {
-            player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.config.updated", key, value)).formatted(Formatting.GREEN));
+            player.sendMessage(ICLCommon.IclText(IclTranslate("text.icl.config.updated", key, value), Formatting.GREEN));
         }
         ICLCommon.reloadIcl();
     }

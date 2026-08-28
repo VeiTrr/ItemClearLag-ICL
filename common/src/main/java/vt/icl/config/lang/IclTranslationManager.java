@@ -122,6 +122,7 @@ public class IclTranslationManager {
                 "\n- §aLastNotificationSound§r: The sound to play when a last notification is sent." +
                 "\n- §aNotificationLang§r: The language for notifications." +
                 "\n- §aNotificationColor§r: The color for notifications." +
+                "\n- §aNotificationPrefix§r: The prefix put in front of every message. Accepts &-codes and &#RRGGBB." +
                 "\n- §aRequireOp§r: Whether to require OP to use ICL commands(except /icl, /icl cancel)." +
                 "\n- §aRequireOpCancel§r: Whether to require OP to cancel a clear." +
                 "\n- §apreserveNoDespawnItems§r: Whether to preserve items that are set to never despawn." +
@@ -166,6 +167,7 @@ public class IclTranslationManager {
                 "\n- §aLastNotificationSound§r: Звук, который воспроизводится при отправке последнего уведомления." +
                 "\n- §aNotificationLang§r: Язык для уведомлений." +
                 "\n- §aNotificationColor§r: Цвет для уведомлений." +
+                "\n- §aNotificationPrefix§r: Префикс перед каждым сообщением. Принимает &-коды и &#RRGGBB." +
                 "\n- §aRequireOp§r: Требуется ли OP для использования команд ICL (кроме /icl, /icl cancel)." +
                 "\n- §aRequireOpCancel§r: Требуется ли OP для отмены очистки." +
                 "\n- §apreserveNoDespawnItems§r: Следует ли сохранять предметы, которые никогда не исчезнут." +
@@ -209,6 +211,7 @@ public class IclTranslationManager {
             "\n- §aLastNotificationSound§r: 发送最后一条通知时播放的声音。" +
             "\n- §aNotificationLang§r: 通知的语言。" +
             "\n- §aNotificationColor§r: 通知的颜色。" +
+                "\n- §aNotificationPrefix§r: 每条消息前的前缀。支持 & 颜色代码和 &#RRGGBB。" +
             "\n- §aRequireOp§r: 是否需要 OP 权限才能使用 ICL 命令（除了 /icl 和 /icl cancel）。" +
             "\n- §aRequireOpCancel§r: 是否需要 OP 权限才能取消清除。" +
             "\n- §apreserveNoDespawnItems§r: 是否保留设为永不消失的物品。" +

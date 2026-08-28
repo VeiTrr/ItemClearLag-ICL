@@ -12,7 +12,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
@@ -24,6 +23,7 @@ import vt.icl.config.Configuration;
 import vt.icl.config.lang.IclTranslationManager;
 import vt.icl.mixin.ItemEntityAccessor;
 import vt.icl.permission.PermissionHandler;
+import vt.icl.text.LegacyText;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -35,7 +35,6 @@ import static vt.icl.config.lang.IclTranslationManager.createDefaultTranslationF
 
 public class ICLCommon {
     public static final String MOD_ID = "icl";
-    public static final String MOD_PREFIX = "[" + MOD_ID.toUpperCase() + "] ";
     private static final String DEFAULT_NOTIFICATION_SOUND = "block.note_block.harp";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID.toUpperCase());
     public static final Path CONFIG_DIR = new File("./config/" + MOD_ID.substring(0, 1).toUpperCase() + MOD_ID.substring(1)).toPath();
@@ -111,8 +110,8 @@ public class ICLCommon {
             scheduleTask(delay * 1000, () -> {
                 ICLCommon.LOGGER.info("{} seconds left", "Clearing items " + (ICLCommon.config.NotificationStart - ICLCommon.config.NotificationDelay * finalI));
                 for (var player : server.getPlayerManager().getPlayerList()) {
-                    MutableText message = Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.notification", (ICLCommon.config.NotificationStart - ICLCommon.config.NotificationDelay * finalI)) + " ")
-                            .formatted(notificationFormatting());
+                    MutableText message = IclText(IclTranslate("text.icl.notification", (ICLCommon.config.NotificationStart - ICLCommon.config.NotificationDelay * finalI)) + " ",
+                            notificationFormatting());
                     IclMessage(player, message);
                     if (ICLCommon.config.doNotificationSound) {
                         runSafely("notification sound", () -> IclPlaysound(player, false));
@@ -124,9 +123,8 @@ public class ICLCommon {
 
     private static void IclMessage(ServerPlayerEntity player, MutableText message) {
         if (permissionCheckforCancel(player.getCommandSource())) {
-            message.append(Text.literal(IclTranslate("text.icl.cancel.button"))
-                    .styled(style -> style.withClickEvent(IclCancelEvent()))
-                    .formatted(Formatting.RED));
+            message.append(LegacyText.parse(IclTranslate("text.icl.cancel.button"), Formatting.RED)
+                    .styled(style -> style.withClickEvent(IclCancelEvent())));
         }
         player.sendMessage(message);
     }
@@ -152,8 +150,8 @@ public class ICLCommon {
                 scheduleTask(finalI * 1000L, () -> {
                     ICLCommon.LOGGER.info("{} seconds left", "Clearing items " + (finalCountdownstart - finalI));
                     for (var player : server.getPlayerManager().getPlayerList()) {
-                        MutableText message = Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)) + " ")
-                                .formatted(notificationFormatting());
+                        MutableText message = IclText(IclTranslate("text.icl.countdown", (finalCountdownstart - finalI)) + " ",
+                                notificationFormatting());
                         IclMessage(player, message);
                     }
                 });
@@ -165,7 +163,7 @@ public class ICLCommon {
         ICLCommon.LOGGER.info("Clearing items");
         for (var player : server.getPlayerManager().getPlayerList()) {
             if (ICLCommon.config.doShowNotification) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.clear")).formatted(notificationFormatting()));
+                player.sendMessage(IclText(IclTranslate("text.icl.clear"), notificationFormatting()));
                 if (ICLCommon.config.doLastNotificationSound) {
                     runSafely("last notification sound", () -> IclPlaysound(player, true));
                 }
@@ -191,7 +189,7 @@ public class ICLCommon {
         }
         for (var player : server.getPlayerManager().getPlayerList()) {
             if (ICLCommon.config.doShowNotification) {
-                player.sendMessage(Text.literal(ICLCommon.MOD_PREFIX + IclTranslate("text.icl.clear.finish", count)).formatted(notificationFormatting()));
+                player.sendMessage(IclText(IclTranslate("text.icl.clear.finish", count), notificationFormatting()));
             }
         }
         ICLCommon.LOGGER.info("Items cleared: {}", count);
@@ -248,6 +246,20 @@ public class ICLCommon {
 
     public static ClickEvent IclCancelEvent() {
         return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/icl cancel");
+    }
+
+    /**
+     * Wraps a message in the configured prefix and renders the legacy codes in
+     * both. {@code base} colours whatever the strings do not colour themselves,
+     * and is what a {@code &r} in them returns to.
+     */
+    public static MutableText IclText(String message, Formatting base) {
+        return LegacyText.parse(notificationPrefix() + message, base);
+    }
+
+    private static String notificationPrefix() {
+        String prefix = ICLCommon.config.NotificationPrefix;
+        return prefix == null ? Configuration.DEFAULT_NOTIFICATION_PREFIX : prefix;
     }
 
     public static String IclTranslate(String key, Object... args) {
